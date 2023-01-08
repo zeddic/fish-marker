@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { MapComponent } from './map/map.component';
 import { CatchesComponent } from './catches/catches.component';
+import { CatchItemComponent } from './catches/catch-item/catch-item.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HeaderComponent,
 		MapComponent,
-		CatchesComponent
+		CatchesComponent,
+		CatchItemComponent
 	],
 	imports: [
 		BrowserModule,
