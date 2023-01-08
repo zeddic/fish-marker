@@ -4,7 +4,8 @@ import { Loader } from '@googlemaps/js-api-loader';
 @Component({
 	selector: 'app-map',
 	templateUrl: './map.component.html',
-	styleUrls: ['./map.component.css']
+	styleUrls: ['./map.component.css'],
+	host: { 'class': 'flex-grow-1' }
 })
 export class MapComponent implements OnInit {
 
