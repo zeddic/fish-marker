@@ -26,16 +26,17 @@ export class MapComponent implements OnInit {
 			});
 
 			const contentString =
-				'<div id="content">' +
-				'<div id="siteNotice">' +
-				"</div>" +
-				'<h1 id="firstHeading" class="firstHeading">Common Carp</h1>' +
-				'<div id="bodyContent">' +
-				"<p>Weight: 16lb 5oz</p>" +
-				"<p>Bait: Pacific Tuna 15mm Boilie</p>" +
-				"<p>Rig: Spinner Rig</p>" +
-				"</div>" +
-				"</div>";
+				`<div id="content">
+					<h1 id="firstHeading" class="firstHeading">Common Carp</h1>
+					<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
+					<div id="bodyContent">
+						<p>
+							Weight: 16lb 5oz<br>
+							Bait: Pacific Tuna 15mm Boilie<br>
+							Rig: Spinner Rig
+						</p>
+					</div>
+				</div>`;
 
 			// Initialise Marker
 			let marker = new google.maps.Marker({
