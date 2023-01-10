@@ -9,3 +9,8 @@ body {
 	height: 100%;
 	margin: 0;
 }
+
+/* Additional margin-top styling (used for mobile nav) */
+.mt-6 {
+	margin-top: 4rem;
+}
