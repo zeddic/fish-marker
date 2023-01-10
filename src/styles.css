@@ -11,6 +11,6 @@ body {
 }
 
 /* Additional margin-top styling (used for mobile nav) */
-.mt-6 {
-	margin-top: 4rem;
+.mb-6 {
+	margin-bottom: 4rem;
 }
