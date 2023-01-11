@@ -14,3 +14,7 @@ body {
 .mb-6 {
 	margin-bottom: 4rem;
 }
+
+.cursor-pointer {
+	cursor: pointer;
+}

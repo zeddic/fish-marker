@@ -9,6 +9,7 @@ import { MapComponent } from './map/map.component';
 import { CatchesComponent } from './catches/catches.component';
 import { CatchItemComponent } from './catches/catch-item/catch-item.component';
 import { MobileComponent } from './navigation/mobile/mobile.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import { MobileComponent } from './navigation/mobile/mobile.component';
 		MapComponent,
 		CatchesComponent,
 		CatchItemComponent,
-		MobileComponent
+		MobileComponent,
+		ProfileComponent
 	],
 	imports: [
 		BrowserModule,
