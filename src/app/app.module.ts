@@ -17,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './auth/login/login.component';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
 	declarations: [
@@ -27,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 		CatchItemComponent,
 		MobileComponent,
 		ProfileComponent,
-		LoginComponent
+		LoginComponent,
+		RegisterComponent
 	],
 	imports: [
 		BrowserModule,
