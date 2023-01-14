@@ -14,6 +14,9 @@ import { CatchesComponent } from './catches/catches.component';
 import { CatchItemComponent } from './catches/catch-item/catch-item.component';
 import { MobileComponent } from './navigation/mobile/mobile.component';
 import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './auth/login/login.component';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [
@@ -23,17 +26,19 @@ import { ProfileComponent } from './profile/profile.component';
 		CatchesComponent,
 		CatchItemComponent,
 		MobileComponent,
-		ProfileComponent
+		ProfileComponent,
+		LoginComponent
 	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		FontAwesomeModule,
+		ReactiveFormsModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())
 	],
-	providers: [],
+	providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
