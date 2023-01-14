@@ -25,12 +25,12 @@
               "src/assets"
             ],
             "styles": [
-			  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": [
-			  "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-			]
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -93,6 +93,16 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "fish-marker:build:production",
+            "firebaseProject": "fish-marker-7e84b",
+            "firebaseHostingSite": "fish-marker-7e84b"
           }
         }
       }

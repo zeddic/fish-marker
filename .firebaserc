@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fish-marker-7e84b": {
+      "hosting": {
+        "fish-marker": [
+          "fish-marker-7e84b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fish-marker-7e84b"
+  }
+}
