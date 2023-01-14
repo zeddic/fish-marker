@@ -1,7 +1,8 @@
 <div class="container h-100">
 	<div class="row my-2">
-		<div class="col d-flex justify-content-end">
+		<div class="col d-flex justify-content-between">
 			<a class="fs-3 text-success cursor-pointer" routerLink="settings"><fa-icon [icon]="faCog"></fa-icon></a>
+			<a class="fs-3 text-success cursor-pointer" (click)="logout()"><fa-icon [icon]="faLogOut"></fa-icon></a>
 		</div>
 	</div>
 	<div class="row d-flex justify-content-center g-0">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
 		'password': new FormControl('', { nonNullable: true, validators: [Validators.required] })
 	});
 
-	constructor(private auth: AngularFireAuth) { }
+	constructor(private auth: AngularFireAuth, private router: Router) { }
 
 	ngOnInit(): void { }
 
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
 			const email = this.userForm.get('email')!.value;
 			const password = this.userForm.get('password')!.value;
 			this.auth.signInWithEmailAndPassword(email, password).then(userCred => {
-				console.log(userCred);
+				this.router.navigate(['catches']);
 			}).catch(error => console.log('An error has occured:', error));
 		}
 	}

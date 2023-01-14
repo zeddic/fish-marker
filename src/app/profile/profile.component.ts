@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
+import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-profile',
@@ -8,5 +10,13 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 })
 export class ProfileComponent {
 	faCog = faCog;
+	faLogOut = faRightFromBracket;
+
+	constructor(private auth: AngularFireAuth, private router: Router) { }
+
+	logout() {
+		this.auth.signOut();
+		this.router.navigate(['login']);
+	}
 
 }
