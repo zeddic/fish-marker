@@ -1,13 +1,18 @@
 <div class="container d-flex align-items-center justify-content-center" style="width: 100vw; height: 80vh;">
-	<form class="p-5 border needs-validation" [formGroup]="userForm" (ngSubmit)="login()">
-		<div class="mb-3">
+	<form class="pt-5 pb-3 px-3 mx-1 border needs-validation row" [formGroup]="userForm" (ngSubmit)="login()">
+		<div class="col-12 mb-3">
 			<label for="email" class="form-label">Email address</label>
 			<input type="email" class="form-control" [ngClass]="{'is-invalid':!userForm.controls.email.valid && userForm.controls.email.touched}" id="email" formControlName="email">
 		</div>
-		<div class="mb-3">
+		<div class="col-12 mb-3">
 			<label for="password" class="form-label">Password</label>
 			<input type="password" class="form-control" [ngClass]="{'is-invalid':!userForm.controls.password.valid && userForm.controls.password.touched}" id="password" formControlName="password">
 		</div>
-		<button type="submit" class="btn btn-success float-end">Login</button>
+		<div class="col-11 mb-3">
+			<a routerLink="/register">Don't have an account?</a>
+		</div>
+		<div class="col-1 mb-3">
+			<button type="submit" class="btn btn-success float-end">Login</button>
+		</div>
 	</form>
 </div>

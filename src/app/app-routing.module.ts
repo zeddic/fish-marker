@@ -16,7 +16,7 @@ const routes: Routes = [
 	{ path: 'profile', component: ProfileComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin } },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
-	{ path: '**', redirectTo: '/catches' }
+	{ path: '**', redirectTo: 'catches' }
 ];
 
 @NgModule({

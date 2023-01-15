@@ -28,4 +28,8 @@ export class LoginComponent implements OnInit {
 			}).catch(error => console.log('An error has occured:', error));
 		}
 	}
+
+	navigateRegister() {
+		this.router.navigate(['register']);
+	}
 }
