@@ -23,8 +23,11 @@ export class RegisterComponent implements OnInit {
 		if (this.userForm.valid) {
 			const email = this.userForm.get('email')!.value;
 			const password = this.userForm.get('password')!.value;
+			const name = this.userForm.get('name')!.value;
 			this.auth.createUserWithEmailAndPassword(email, password).then(userCred => {
-				this.router.navigate(['catches']);
+				userCred.user?.updateProfile({ displayName: name }).then(() => {
+					this.router.navigate(['catches']);
+				});
 			}).catch(error => console.log('An error has occured:', error));
 		}
 	}
