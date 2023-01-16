@@ -1,1 +1,38 @@
 <div id="map" class="full flex-grow-1"></div>
+<div id="add-catch-modal" class="modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Catch</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="" class="row">
+					<div class="col-12 mb-3">
+						<label for="type" class="form-label">Type</label>
+						<input type="text" class="form-control" id="type">
+					</div>
+					<div class="col-12 mb-3">
+						<label for="weight" class="form-label">Weight</label>
+						<input type="text" class="form-control" id="weight">
+					</div>
+					<div class="col-12 mb-3">
+						<label for="rig" class="form-label">Rig</label>
+						<input type="text" class="form-control" id="rig">
+					</div>
+					<div class="col-12 mb-3">
+						<label for="bait" class="form-label">Bait</label>
+						<input type="text" class="form-control" id="bait">
+					</div>
+					<input type="hidden" name="marker_location" value="{{ clickLocation }}">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" (click)="addCatch()">Save changes</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
