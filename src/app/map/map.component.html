@@ -4,34 +4,35 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Add Catch</h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+				<button type="button" id="close-bootstrap-modal" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="" class="row">
+				<form class="row" [formGroup]="catchForm" (ngSubmit)="addCatch()">
 					<div class="col-12 mb-3">
 						<label for="type" class="form-label">Type</label>
-						<input type="text" class="form-control" id="type">
+						<input type="text" class="form-control" id="type" [ngClass]="{'is-invalid':!catchForm.controls.type.valid && catchForm.controls.type.touched}" formControlName="type">
 					</div>
 					<div class="col-12 mb-3">
 						<label for="weight" class="form-label">Weight</label>
-						<input type="text" class="form-control" id="weight">
+						<input type="text" class="form-control" id="weight" [ngClass]="{'is-invalid':!catchForm.controls.weight.valid && catchForm.controls.weight.touched}" formControlName="weight">
 					</div>
 					<div class="col-12 mb-3">
 						<label for="rig" class="form-label">Rig</label>
-						<input type="text" class="form-control" id="rig">
+						<input type="text" class="form-control" id="rig" [ngClass]="{'is-invalid':!catchForm.controls.rig.valid && catchForm.controls.rig.touched}" formControlName="rig">
 					</div>
 					<div class="col-12 mb-3">
 						<label for="bait" class="form-label">Bait</label>
-						<input type="text" class="form-control" id="bait">
+						<input type="text" class="form-control" id="bait" [ngClass]="{'is-invalid':!catchForm.controls.bait.valid && catchForm.controls.bait.touched}" formControlName="bait">
 					</div>
-					<input type="hidden" name="marker_location" value="{{ clickLocation }}">
+					<input type="hidden" name="lat" formControlName="lat">
+					<input type="hidden" name="lng" formControlName="lng">
+					<div class="col-12 d-flex justify-content-end">
+						<button type="submit" class="btn btn-success me-1">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
 				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" (click)="addCatch()">Save changes</button>
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
