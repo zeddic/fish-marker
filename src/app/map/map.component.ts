@@ -5,6 +5,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { first } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-map',
@@ -34,7 +35,7 @@ export class MapComponent implements OnInit {
 	ngOnInit() {
 		// Initialise loaded for map
 		let loader = new Loader({
-			apiKey: 'AIzaSyAFmtZ0FFDLTPmSlySZU2e5EA4NwdOt0Cg'
+			apiKey: environment.firebase.apiKey
 		});
 
 		this.auth.authState.pipe(first()).subscribe(user => {
