@@ -72,11 +72,9 @@ export class MapComponent implements OnInit {
 											<h1 id="firstHeading" class="firstHeading">${this.catches[i].type}</h1>
 											<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
 											<div id="bodyContent">
-												<p>
-													Weight: ${this.catches[i].weight}<br>
-													Bait: ${this.catches[i].bait}<br>
-													Rig: ${this.catches[i].rig}
-												</p>
+												<p class="mb-0"><strong>Weight:</strong> ${this.catches[i].weight}</p>
+												<p class="mb-0"><strong>Bait:</strong> ${this.catches[i].bait}</p>
+												<p class="mb-0"><strong>Rig:</strong> ${this.catches[i].rig}</p>
 											</div>
 										</div>`,
 							ariaLabel: "Uluru",
@@ -123,16 +121,14 @@ export class MapComponent implements OnInit {
 				formValues.marker.addListener("click", () => {
 					new google.maps.InfoWindow({
 						content: `<div id="content">
-											<h1 id="firstHeading" class="firstHeading">${formValues.type}</h1>
-											<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
-											<div id="bodyContent">
-												<p>
-													Weight: ${formValues.weight}<br>
-													Bait: ${formValues.bait}<br>
-													Rig: ${formValues.rig}
-												</p>
-											</div>
-										</div>`,
+										<h1 id="firstHeading" class="firstHeading">${formValues.type}</h1>
+										<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
+										<div id="bodyContent">
+											<p class="mb-0"><strong>Weight:</strong> ${formValues.weight}</p>
+											<p class="mb-0"><strong>Bait:</strong> ${formValues.bait}</p>
+											<p class="mb-0"><strong>Rig:</strong> ${formValues.rig}</p>
+										</div>
+									</div>`,
 						ariaLabel: "Uluru",
 					}).open({
 						anchor: formValues.marker,
