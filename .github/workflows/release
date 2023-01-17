@@ -34,7 +34,7 @@ jobs:
       - name: install packages
         run: |
           npm install
-          npm run build
+          npm run build:prod
           
       - name: Correct angularfire bug
         run: |
@@ -44,6 +44,5 @@ jobs:
           sed -i -e 's/export interface QuerySnapshot<T> extends firebase.firestore.QuerySnapshot {/export interface QuerySnapshot<T> extends firebase.firestore.QuerySnapshot<T> {/g' 'node_modules/@angular/fire/compat/firestore/interfaces.d.ts'
           sed -i -e 's/export interface DocumentChange<T> extends firebase.firestore.DocumentChange {/export interface DocumentChange<T> extends firebase.firestore.DocumentChange<T> {/g' 'node_modules/@angular/fire/compat/firestore/interfaces.d.ts'
         shell: bash
-      -name: Deploy to Github Pages
-        id: deployment
+      - name: Deploy to Github Pages
         uses: actions/deploy-pages@v1
