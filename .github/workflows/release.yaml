@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Use node.js
-        uses: actions/setup-node@latest
+        uses: actions/setup-node@v3
       
       # Install the required packages
       - name: install packages
