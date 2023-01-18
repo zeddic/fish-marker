@@ -45,7 +45,7 @@ jobs:
         shell: bash
 
       - name: Configure pages
-      uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v2
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
