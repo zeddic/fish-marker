@@ -42,6 +42,9 @@ jobs:
           sed -i -e 's/export interface DocumentChange<T> extends firebase.firestore.DocumentChange {/export interface DocumentChange<T> extends firebase.firestore.DocumentChange<T> {/g' 'node_modules/@angular/fire/compat/firestore/interfaces.d.ts'
         shell: bash
 
+      - name: 'Create env file'
+        run: echo "${{ secrets.API_KEY }}" > ../environments/environment.ts
+
       - name: build
         run: npm run build
 
