@@ -33,7 +33,7 @@ jobs:
       - name: install packages
         run: |
           npm ci
-          npm run build:prod
+          npm run build
           
       - name: Correct angularfire bug
         run: |
