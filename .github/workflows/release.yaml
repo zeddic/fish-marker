@@ -43,7 +43,7 @@ jobs:
         shell: bash
 
       - name: 'Create env file'
-        run: echo "${{ secrets.API_KEY }}" > ../environments/environment.ts
+        run: echo "${{ secrets.API_KEY }}" > ~/src/environments/environment.ts
 
       - name: build
         run: npm run build
