@@ -51,7 +51,7 @@ jobs:
         run: npm run build
 
       - name: Make directory
-        run: mkdir x
+        run: mkdir docs
 
       - name: Configure pages
         uses: actions/configure-pages@v2
@@ -59,7 +59,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'x'
+          path: 'docs'
 
       - name: Deploy to Github Pages
         id: deployment
