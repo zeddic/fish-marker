@@ -54,7 +54,7 @@ jobs:
         run: npm run build
 
       - name: copy index
-        run: cp index.html 404.html
+        run: cp dust/index.html 404.html
 
       - name: Configure pages
         uses: actions/configure-pages@v2
