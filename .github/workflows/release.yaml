@@ -51,7 +51,7 @@ jobs:
         run: mkdir docs
 
       - name: Build
-        run: ng build --output-path docs --base-href /fish-marker/
+        run: ng build
 
       - name: copy index
         run: cp docs/index.html docs/404.html
