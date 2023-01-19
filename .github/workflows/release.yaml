@@ -47,11 +47,14 @@ jobs:
           sed -i -e 's/export interface DocumentChange<T> extends firebase.firestore.DocumentChange {/export interface DocumentChange<T> extends firebase.firestore.DocumentChange<T> {/g' 'node_modules/@angular/fire/compat/firestore/interfaces.d.ts'
         shell: bash
 
-      - name: build
-        run: npm run build
-
       - name: Make directory
         run: mkdir docs
+
+      - name: Build
+        run: ng build --output-path docs --base-href /fish-marker/
+
+      - name: copy index
+        run: cp docs/index.html docs/404.html
 
       - name: Configure pages
         uses: actions/configure-pages@v2
