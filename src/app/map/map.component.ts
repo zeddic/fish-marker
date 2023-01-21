@@ -40,65 +40,64 @@ export class MapComponent implements OnInit {
 
 		this.auth.authState.pipe(first()).subscribe(user => {
 			this.uid = user?.uid;
-		});
 
-		// Initialise Map and Markers
-		loader.load().then(() => {
-			// Initialise Map
-			this.map = new google.maps.Map(document.getElementById('map')!, {
-				center: { lat: 53.391991, lng: -3.178860 },
-				zoom: 20,
-				mapTypeId: 'satellite',
-				tilt: 0
-			});
-
-			// Fetch list of catches from firebase
-
-			this.catchesCollection = this.firestore.collection('catches', ref => ref.where('uid', '==', 'NQdXiWfL7WWQeZhSW8umFolJTb52'));
-			this.catchesCollection.valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe(documents => {
-				// Save documents to catches array
-				this.catches = documents;
-				for (let i = 0; i < this.catches.length; i++) {
-					// Create marker and add to existing array item for catch
-					this.catches[i].marker = new google.maps.Marker({
-						position: { lat: this.catches[i].lat, lng: this.catches[i].lng },
-						map: this.map,
-						draggable: true,
-						label: (i + 1).toString()
-					});
-					// Add click listener to marker to show details
-					this.catches[i].marker.addListener("click", () => {
-						new google.maps.InfoWindow({
-							content: `<div id="content">
-											<h1 id="firstHeading" class="firstHeading">${this.catches[i].type}</h1>
-											<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
-											<div id="bodyContent">
-												<p class="mb-0"><strong>Weight:</strong> ${this.catches[i].weight}</p>
-												<p class="mb-0"><strong>Bait:</strong> ${this.catches[i].bait}</p>
-												<p class="mb-0"><strong>Rig:</strong> ${this.catches[i].rig}</p>
-											</div>
-										</div>`,
-							ariaLabel: "Uluru",
-						}).open({
-							anchor: this.catches[i].marker,
-							map: this.map,
-						});
-					});
-				}
-			});
-
-			// On click of map, add new marker to map
-			this.map.addListener('click', (mapsMouseEvent: any) => {
-				let location = mapsMouseEvent.latLng.toJSON();
-				// Add click location to marker form
-				this.catchForm.patchValue({
-					lat: location.lat,
-					lng: location.lng
+			loader.load().then(() => {
+				// Initialise Map
+				this.map = new google.maps.Map(document.getElementById('map')!, {
+					center: { lat: 53.391991, lng: -3.178860 },
+					zoom: 20,
+					mapTypeId: 'satellite',
+					tilt: 0
 				});
 
-				const element = document.getElementById('add-catch-modal') as HTMLElement;
-				const myModal = new Modal(element);
-				myModal.show();
+				// Fetch list of catches from firebase
+
+				this.catchesCollection = this.firestore.collection('catches', ref => ref.where('uid', '==', this.uid));
+				this.catchesCollection.valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe(documents => {
+					// Save documents to catches array
+					this.catches = documents;
+					for (let i = 0; i < this.catches.length; i++) {
+						// Create marker and add to existing array item for catch
+						this.catches[i].marker = new google.maps.Marker({
+							position: { lat: this.catches[i].lat, lng: this.catches[i].lng },
+							map: this.map,
+							draggable: true,
+							label: (i + 1).toString()
+						});
+						// Add click listener to marker to show details
+						this.catches[i].marker.addListener("click", () => {
+							new google.maps.InfoWindow({
+								content: `<div id="content">
+												<h1 id="firstHeading" class="firstHeading">${this.catches[i].type}</h1>
+												<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
+												<div id="bodyContent">
+													<p class="mb-0"><strong>Weight:</strong> ${this.catches[i].weight}</p>
+													<p class="mb-0"><strong>Bait:</strong> ${this.catches[i].bait}</p>
+													<p class="mb-0"><strong>Rig:</strong> ${this.catches[i].rig}</p>
+												</div>
+											</div>`,
+								ariaLabel: "Uluru",
+							}).open({
+								anchor: this.catches[i].marker,
+								map: this.map,
+							});
+						});
+					}
+				});
+
+				// On click of map, add new marker to map
+				this.map.addListener('click', (mapsMouseEvent: any) => {
+					let location = mapsMouseEvent.latLng.toJSON();
+					// Add click location to marker form
+					this.catchForm.patchValue({
+						lat: location.lat,
+						lng: location.lng
+					});
+
+					const element = document.getElementById('add-catch-modal') as HTMLElement;
+					const myModal = new Modal(element);
+					myModal.show();
+				});
 			});
 		});
 	}
