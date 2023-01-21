@@ -59,7 +59,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
         with: 
-          path: 'dist/'
+          path: 'dist/fish-marker'
 
       - name: Deploy to Github Pages
         id: deployment
