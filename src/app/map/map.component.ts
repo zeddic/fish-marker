@@ -35,7 +35,7 @@ export class MapComponent implements OnInit {
 	ngOnInit() {
 		// Initialise loaded for map
 		let loader = new Loader({
-			apiKey: environment.firebase.apiKey
+			apiKey: environment.firebase.mapApiKey
 		});
 
 		this.auth.authState.pipe(first()).subscribe(user => {
