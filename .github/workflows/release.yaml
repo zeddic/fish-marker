@@ -51,7 +51,7 @@ jobs:
         run: npm run build
 
       - name: copy index
-        run: cp docs/fish-marker/index.html docs/fish-marker/404.html
+        run: cp dist/fish-marker/index.html dist/fish-marker/404.html
 
       - name: Configure pages
         uses: actions/configure-pages@v2
@@ -59,7 +59,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
         with: 
-          path: 'docs/'
+          path: 'dist/fish-marker'
 
       - name: Deploy to Github Pages
         id: deployment
