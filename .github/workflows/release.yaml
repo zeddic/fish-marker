@@ -51,7 +51,7 @@ jobs:
         run: npm run build
 
       - name: copy index
-        run: cp docs/index.html docs/404.html
+        run: cp docs/fish-marker/index.html docs/fish-marker/404.html
 
       - name: Configure pages
         uses: actions/configure-pages@v2
