@@ -54,7 +54,7 @@ export class MapComponent implements OnInit {
 
 			// Fetch list of catches from firebase
 
-			this.catchesCollection = this.firestore.collection('catches', ref => ref.where('uid', '==', 'abc'));
+			this.catchesCollection = this.firestore.collection('catches', ref => ref.where('uid', '==', 'NQdXiWfL7WWQeZhSW8umFolJTb52'));
 			this.catchesCollection.valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe(documents => {
 				// Save documents to catches array
 				this.catches = documents;
