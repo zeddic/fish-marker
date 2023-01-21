@@ -47,22 +47,17 @@ jobs:
           sed -i -e 's/export interface DocumentChange<T> extends firebase.firestore.DocumentChange {/export interface DocumentChange<T> extends firebase.firestore.DocumentChange<T> {/g' 'node_modules/@angular/fire/compat/firestore/interfaces.d.ts'
         shell: bash
 
-      - name: Make directory
-        run: mkdir docs
-
       - name: Build
         run: npm run build --output-path docs --base-href /fish-marker/
 
       - name: copy index
-        run: cp dist/index.html 404.html
+        run: cp dist/fish-marker/index.html dist/fish-marker/404.html
 
       - name: Configure pages
         uses: actions/configure-pages@v2
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
-        with:
-          path: 'docs'
 
       - name: Deploy to Github Pages
         id: deployment
