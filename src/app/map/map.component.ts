@@ -16,7 +16,6 @@ import { UserService } from '../auth/user.service';
 export class MapComponent implements OnInit {
 	// https://github.com/angular/angularfire/issues/3290#issuecomment-1367299606
 	clickLocation: any;
-	catchesCollection!: AngularFirestoreCollection;
 	catches: any[] = [];
 	map!: any;
 	user!: any;
@@ -44,28 +43,16 @@ export class MapComponent implements OnInit {
 
 			// Load the map
 			loader.load().then(() => {
-				// Initialise Map and click event on map
+				// Initialise Map
 				this.map = new google.maps.Map(document.getElementById('map')!, {
 					center: { lat: 53.391991, lng: -3.178860 },
 					zoom: 20,
 					mapTypeId: 'satellite',
 					tilt: 0
-				}).addListener('click', (mapsMouseEvent: any) => {
-					let location = mapsMouseEvent.latLng.toJSON();
-					// Add click location to marker form
-					this.catchForm.patchValue({
-						lat: location.lat,
-						lng: location.lng
-					});
-
-					const element = document.getElementById('add-catch-modal') as HTMLElement;
-					const myModal = new Modal(element);
-					myModal.show();
 				});
 
 				// Fetch list of catches from firebase
-				this.catchesCollection = this.firestore.collection('catches', ref => ref.where('uid', '==', this.user.uid));
-				this.catchesCollection.valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe(documents => {
+				this.userService.userCatches.subscribe(documents => {
 					// Save documents to catches array
 					this.catches = documents;
 					for (let i = 0; i < this.catches.length; i++) {
@@ -96,6 +83,20 @@ export class MapComponent implements OnInit {
 						});
 					}
 				});
+
+				// On click of map, add new marker to map
+				this.map.addListener('click', (mapsMouseEvent: any) => {
+					let location = mapsMouseEvent.latLng.toJSON();
+					// Add click location to marker form
+					this.catchForm.patchValue({
+						lat: location.lat,
+						lng: location.lng
+					});
+
+					const element = document.getElementById('add-catch-modal') as HTMLElement;
+					const myModal = new Modal(element);
+					myModal.show();
+				});
 			});
 		});
 	}
@@ -106,7 +107,7 @@ export class MapComponent implements OnInit {
 			let formValues: any = this.catchForm.value;
 			formValues.uid = this.user.uid;
 			// Send data to firebase
-			this.catchesCollection.add(formValues).then(res => {
+			this.firestore.collection('catches').add(formValues).then(res => {
 				// Once added clear form and add marker to map with click event
 				this.catchForm.reset();
 				formValues.marker = new google.maps.Marker({

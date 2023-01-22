@@ -11,12 +11,13 @@ import { RegisterComponent } from './auth/register/register.component';
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
+	{ path: '', redirectTo: '/catches', pathMatch: 'full' },
 	{ path: 'map', component: MapComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin } },
 	{ path: 'catches', component: CatchesComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin } },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin } },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
-	{ path: '**', redirectTo: 'catches' }
+	{ path: '**', redirectTo: '/catches' }
 ];
 
 @NgModule({
