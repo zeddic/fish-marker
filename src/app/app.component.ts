@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '@angular/fire/auth/firebase';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UserService } from './auth/user.service';
 
 @Component({
 	selector: 'app-root',
@@ -9,18 +9,17 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class AppComponent implements OnInit {
 	title = 'fish-marker';
-	constructor(private auth: AngularFireAuth) { }
+	constructor(private auth: AngularFireAuth, private userService: UserService) { }
 	showNavigation = false;
-	user = {};
 
 	ngOnInit(): void {
 		this.auth.onAuthStateChanged(user => {
 			if (user) {
 				this.showNavigation = true;
-				this.user = user;
+				this.userService.userDetails.next(user);
 			} else {
 				this.showNavigation = false;
-				this.user = {};
+				this.userService.userDetails.next({});
 			}
 		});
 	}
