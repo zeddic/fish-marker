@@ -6,6 +6,7 @@ import { first } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../auth/user.service';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
 	selector: 'app-map',
@@ -37,6 +38,18 @@ export class MapComponent implements OnInit {
 			apiKey: environment.firebase.mapApiKey
 		});
 
+		let currentPosition = { lat: 53.391991, lng: -3.178860 };
+
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+				const pos = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+				};
+				currentPosition = pos;
+			});
+		}
+
 		// Fetch the user details
 		this.userService.userDetails.pipe(first()).subscribe(user => {
 			this.user = user;
@@ -45,7 +58,7 @@ export class MapComponent implements OnInit {
 			loader.load().then(() => {
 				// Initialise Map
 				this.map = new google.maps.Map(document.getElementById('map')!, {
-					center: { lat: 53.391991, lng: -3.178860 },
+					center: currentPosition,
 					zoom: 20,
 					mapTypeId: 'satellite',
 					tilt: 0
@@ -106,6 +119,7 @@ export class MapComponent implements OnInit {
 			// Get values of form then and user id
 			let formValues: any = this.catchForm.value;
 			formValues.uid = this.user.uid;
+			formValues.createdAt = Timestamp.now();
 			// Send data to firebase
 			this.firestore.collection('catches').add(formValues).then(res => {
 				// Once added clear form and add marker to map with click event
