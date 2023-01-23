@@ -38,17 +38,18 @@ export class MapComponent implements OnInit {
 			apiKey: environment.firebase.mapApiKey
 		});
 
-		let currentPosition = { lat: 53.391991, lng: -3.178860 };
+		// let currentPosition = { lat: 53.391991, lng: -3.178860 };
 
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-				const pos = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude,
-				};
-				currentPosition = pos;
-			});
-		}
+		// if (navigator.geolocation) {
+		// 	navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+		// 		const pos = {
+		// 			lat: position.coords.latitude,
+		// 			lng: position.coords.longitude,
+		// 		};
+		// 		currentPosition = (pos ? pos : { lat: 53.391991, lng: -3.178860 });
+		// 		return currentPosition;
+		// 	});
+		// }
 
 		// Fetch the user details
 		this.userService.userDetails.pipe(first()).subscribe(user => {
@@ -58,7 +59,7 @@ export class MapComponent implements OnInit {
 			loader.load().then(() => {
 				// Initialise Map
 				this.map = new google.maps.Map(document.getElementById('map')!, {
-					center: currentPosition,
+					center: this.getLocation(),
 					zoom: 20,
 					mapTypeId: 'satellite',
 					tilt: 0
@@ -153,6 +154,21 @@ export class MapComponent implements OnInit {
 				const element = document.getElementById('close-bootstrap-modal') as HTMLElement;
 				element.click();
 			});
+		}
+	}
+
+	getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				const pos = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+				};
+				return pos;
+			});
+			return { lat: 53.391991, lng: -3.178860 };
+		} else {
+			return { lat: 53.391991, lng: -3.178860 };
 		}
 	}
 }
