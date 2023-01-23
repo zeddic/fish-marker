@@ -164,6 +164,7 @@ export class MapComponent implements OnInit {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude,
 				};
+				this.map.setCenter(pos);
 				return pos;
 			});
 			return { lat: 53.391991, lng: -3.178860 };
