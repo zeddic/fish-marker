@@ -14,9 +14,20 @@
 						<label for="type" class="form-label">Type</label>
 						<input type="text" class="form-control" id="type" [ngClass]="{'is-invalid':!catchForm.controls.type.valid && catchForm.controls.type.touched}" formControlName="type">
 					</div>
-					<div class="col-12 mb-3">
+					<div class="col-12">
 						<label for="weight" class="form-label">Weight</label>
-						<input type="text" class="form-control" id="weight" [ngClass]="{'is-invalid':!catchForm.controls.weight.valid && catchForm.controls.weight.touched}" formControlName="weight">
+					</div>
+					<div class="col-6 mb-3">
+						<div class="input-group">
+							<input type="number" class="form-control" id="lbs" [ngClass]="{'is-invalid':!catchForm.controls.lbs.valid && catchForm.controls.lbs.touched}" formControlName="lbs">
+							<span class="input-group-text">Lbs</span>
+						</div>
+					</div>
+					<div class="col-6 mb-3">
+						<div class="input-group">
+							<input type="number" class="form-control" id="oz" [ngClass]="{'is-invalid':!catchForm.controls.oz.valid && catchForm.controls.oz.touched}" formControlName="oz">
+							<span class="input-group-text">oz</span>
+						</div>
 					</div>
 					<div class="col-12 mb-3">
 						<label for="rig" class="form-label">Rig</label>

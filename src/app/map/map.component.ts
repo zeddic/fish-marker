@@ -23,7 +23,8 @@ export class MapComponent implements OnInit {
 
 	catchForm = new FormGroup({
 		'type': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'weight': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+		'lbs': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+		'oz': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
 		'rig': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
 		'bait': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
 		'lat': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -37,19 +38,6 @@ export class MapComponent implements OnInit {
 		let loader = new Loader({
 			apiKey: environment.firebase.mapApiKey
 		});
-
-		// let currentPosition = { lat: 53.391991, lng: -3.178860 };
-
-		// if (navigator.geolocation) {
-		// 	navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-		// 		const pos = {
-		// 			lat: position.coords.latitude,
-		// 			lng: position.coords.longitude,
-		// 		};
-		// 		currentPosition = (pos ? pos : { lat: 53.391991, lng: -3.178860 });
-		// 		return currentPosition;
-		// 	});
-		// }
 
 		// Fetch the user details
 		this.userService.userDetails.pipe(first()).subscribe(user => {
@@ -84,7 +72,7 @@ export class MapComponent implements OnInit {
 												<h1 id="firstHeading" class="firstHeading">${this.catches[i].type}</h1>
 												<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
 												<div id="bodyContent">
-													<p class="mb-0"><strong>Weight:</strong> ${this.catches[i].weight}</p>
+													<p class="mb-0"><strong>Weight:</strong> ${this.catches[i].lbs} Lbs ${this.catches[i].oz} oz</p>
 													<p class="mb-0"><strong>Bait:</strong> ${this.catches[i].bait}</p>
 													<p class="mb-0"><strong>Rig:</strong> ${this.catches[i].rig}</p>
 												</div>
@@ -151,6 +139,7 @@ export class MapComponent implements OnInit {
 				});
 				// Add new catch to local array
 				this.catches.push(formValues);
+				this.userService.userCatches.next(this.catches);
 				const element = document.getElementById('close-bootstrap-modal') as HTMLElement;
 				element.click();
 			});

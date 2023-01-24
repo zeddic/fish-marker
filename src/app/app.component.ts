@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
 
 				// Fetch the users previous catches
 				this.firestore.collection('catches', ref => ref.where('uid', '==', user.uid)).valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe((catches: any) => {
-					updatedUser.count = catches.length;
 					this.userService.userCatches.next(catches);
 					this.userService.userDetails.next(user);
 				});
