@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Catch } from './catch.model';
 import { CatchesService } from './catches.service';
 
 @Component({

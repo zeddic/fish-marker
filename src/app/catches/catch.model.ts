@@ -1,4 +1,4 @@
-interface Catch {
+export interface Catch {
 	id?: string;
 	type: string;
 	lat: string;

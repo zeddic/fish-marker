@@ -17,18 +17,11 @@ export class AppComponent implements OnInit {
 	ngOnInit(): void {
 		this.auth.onAuthStateChanged(user => {
 			if (user) {
-				let updatedUser: any = user;
 				this.showNavigation = true;
-
-				// Fetch the users previous catches
-				this.firestore.collection('catches', ref => ref.where('uid', '==', user.uid)).valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe((catches: any) => {
-					this.userService.userCatches.next(catches);
-					this.userService.userDetails.next(user);
-				});
+				this.userService.userDetails.next(user);
 			} else {
 				this.showNavigation = false;
 				this.userService.userDetails.next({});
-				this.userService.userCatches.next([]);
 			}
 		});
 	}

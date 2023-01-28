@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../auth/user.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { CatchesService } from '../catches/catches.service';
 
 @Component({
 	selector: 'app-map',
@@ -31,7 +32,7 @@ export class MapComponent implements OnInit {
 		'lng': new FormControl('', { nonNullable: true, validators: [Validators.required] })
 	});
 
-	constructor(private firestore: AngularFirestore, private userService: UserService) { }
+	constructor(private firestore: AngularFirestore, private userService: UserService, private catchesService: CatchesService) { }
 
 	ngOnInit() {
 		// Initialise loaded for map
@@ -54,9 +55,11 @@ export class MapComponent implements OnInit {
 				});
 
 				// Fetch list of catches from firebase
-				this.userService.userCatches.subscribe(documents => {
+				this.catchesService.userCatches.subscribe(documents => {
 					// Save documents to catches array
-					this.catches = documents;
+					if (documents !== null) {
+						this.catches = documents;
+					}
 					for (let i = 0; i < this.catches.length; i++) {
 						// Create marker and add to existing array item for catch
 						this.catches[i].marker = new google.maps.Marker({
@@ -139,7 +142,7 @@ export class MapComponent implements OnInit {
 				});
 				// Add new catch to local array
 				this.catches.push(formValues);
-				this.userService.userCatches.next(this.catches);
+				this.catchesService.userCatches.next(this.catches);
 				const element = document.getElementById('close-bootstrap-modal') as HTMLElement;
 				element.click();
 			});
