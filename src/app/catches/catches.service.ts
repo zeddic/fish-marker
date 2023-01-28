@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { first, Observable } from 'rxjs';
+import { BehaviorSubject, first } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CatchesService {
+	userCatches = new BehaviorSubject<Catch[] | null>(null);
 
 	constructor(private firestore: AngularFirestore) { }
 
-	// Did try to type the outcome but received errors - watchUserCatches(userId: string): Observable<Catch[]> { 
-	watchUserCatches(userId: string) {
-		return this.firestore.collection('catches', ref => ref.where('uid', '==', userId)).valueChanges({ idField: 'doc_id' }).pipe(first());
+	// Retrieve a list of catches for 
+	fetchUserCatches(userId: string) {
+		this.firestore.collection<Catch>('catches', ref => ref.where('uid', '==', userId)).valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe((catches: Catch[]) => this.userCatches.next(catches));
 	}
 
 	addCatch(formValues: Catch) {
