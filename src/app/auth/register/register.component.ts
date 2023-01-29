@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
 	selector: 'app-register',
@@ -15,7 +14,7 @@ export class RegisterComponent implements OnInit {
 		'name': new FormControl('', { nonNullable: true, validators: [Validators.required] })
 	});
 
-	constructor(private auth: AngularFireAuth, private router: Router) { }
+	constructor(private userService: UserService) { }
 
 	ngOnInit(): void { }
 
@@ -24,11 +23,7 @@ export class RegisterComponent implements OnInit {
 			const email = this.userForm.get('email')!.value;
 			const password = this.userForm.get('password')!.value;
 			const name = this.userForm.get('name')!.value;
-			this.auth.createUserWithEmailAndPassword(email, password).then(userCred => {
-				userCred.user?.updateProfile({ displayName: name }).then(() => {
-					this.router.navigate(['catches']);
-				});
-			}).catch(error => console.log('An error has occured:', error));
+			this.userService.createUser(email, password, name);
 		}
 	}
 }

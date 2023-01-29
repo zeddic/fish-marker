@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserService } from '../auth/user.service';
+import { Catch } from './catch.model';
+import { CatchesService } from './catches.service';
 
 @Component({
 	selector: 'app-catches',
@@ -8,19 +9,18 @@ import { UserService } from '../auth/user.service';
 	styleUrls: ['./catches.component.css']
 })
 export class CatchesComponent implements OnInit, OnDestroy {
-	catches = [];
+	catches: Catch[] = [];
 	catchSubscription!: Subscription;
-	constructor(private userService: UserService) { }
+	constructor(private catchesService: CatchesService) { }
 
 	ngOnInit(): void {
-		this.userService.userCatches.subscribe(catches => {
-			this.catches = catches;
+		// Subscribe to list of users catches, if null set to empty array
+		this.catchSubscription = this.catchesService.userCatches.subscribe((catches: Catch[] | null) => {
+			this.catches = (catches !== null ? catches : []);
 		});
 	}
 
 	ngOnDestroy(): void {
-		if (this.catchSubscription != null) {
-			this.catchSubscription.unsubscribe();
-		}
+		this.catchSubscription.unsubscribe();
 	}
 }
