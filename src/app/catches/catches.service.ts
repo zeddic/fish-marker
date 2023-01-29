@@ -13,7 +13,7 @@ export class CatchesService {
 
 	// Retrieve a list of catches for 
 	fetchUserCatches(userId: string) {
-		this.firestore.collection<Catch>('catches', ref => ref.where('uid', '==', 'NQdXiWfL7WWQeZhSW8umFolJTb52')).valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe((catches: Catch[]) => this.userCatches.next(catches));
+		this.firestore.collection<Catch>('catches', ref => ref.where('uid', '==', userId)).valueChanges({ idField: 'doc_id' }).pipe(first()).subscribe((catches: Catch[]) => this.userCatches.next(catches));
 	}
 
 	addCatch(formValues: Catch) {

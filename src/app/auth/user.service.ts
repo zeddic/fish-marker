@@ -7,10 +7,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserService {
 	user = new BehaviorSubject<User | null>(null);
+	uid!: string;
 
 	constructor() { }
 
 	setUser(user: User | null) {
 		this.user.next(user);
+		this.uid = (user !== null ? user.uid : '');
 	}
 }
