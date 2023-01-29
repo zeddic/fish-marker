@@ -18,6 +18,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './auth/register/register.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { BUCKET } from '@angular/fire/compat/storage';
 
 @NgModule({
 	declarations: [
@@ -38,9 +40,13 @@ import { RegisterComponent } from './auth/register/register.component';
 		ReactiveFormsModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
-		provideFirestore(() => getFirestore())
+		provideFirestore(() => getFirestore()),
+		AngularFirestoreModule
 	],
-	providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
+	providers: [
+		{ provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+		{ provide: BUCKET, useValue: environment.firebase.storageBucket }
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

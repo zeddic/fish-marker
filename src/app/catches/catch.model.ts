@@ -11,5 +11,5 @@ export interface Catch {
 	bait: string;
 	uid: string;
 	marker?: any;
-	imgURL?: string;
+	image?: string;
 }

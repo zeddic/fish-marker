@@ -21,6 +21,7 @@ export class MapComponent implements OnInit, OnDestroy {
 	catches: Catch[] = [];
 	catchSubscription!: Subscription;
 	map!: any;
+	fileToUpload: File | null = null;
 
 	// Create structure for catch form
 	catchForm = new FormGroup({
@@ -80,11 +81,22 @@ export class MapComponent implements OnInit, OnDestroy {
 		if (this.catchForm.valid) {
 			let catchFormValues: any = this.catchForm.value;
 			catchFormValues.createdAt = Timestamp.now();
-			this.catchesService.addCatch(catchFormValues);
+			// console.log(this.fileToUpload)
+			// let url = this.catchesService.uploadCatchPhoto(this.fileToUpload, catchFormValues.uid);
+			// console.log(url);
+			// catchFormValues.image = url;
+
+
+
+			this.catchesService.addCatch(catchFormValues, this.fileToUpload);
 			this.createMarker(catchFormValues);
 			const element = document.getElementById('close-bootstrap-modal') as HTMLElement;
 			element.click();
 		}
+	}
+
+	handleFileInput(event: any) {
+		this.fileToUpload = event.target.files[0];
 	}
 
 	createMarker(catchItem: Catch) {
@@ -97,7 +109,7 @@ export class MapComponent implements OnInit, OnDestroy {
 			new google.maps.InfoWindow({
 				content: `<div id="content">
 							<h1 id="firstHeading" class="firstHeading">${catchItem.type}</h1>
-							<img src="assets/fish_example.jpg" class="card-img-top" alt="...">
+							<img src="${catchItem.image}" class="card-img-top" alt="...">
 							<div id="bodyContent">
 								<p class="mb-0"><strong>Weight:</strong> ${catchItem.lbs} Lbs ${catchItem.oz} oz</p>
 								<p class="mb-0"><strong>Bait:</strong> ${catchItem.bait}</p>

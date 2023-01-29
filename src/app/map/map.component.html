@@ -37,6 +37,10 @@
 						<label for="bait" class="form-label">Bait</label>
 						<input type="text" class="form-control" id="bait" [ngClass]="{'is-invalid':!catchForm.controls.bait.valid && catchForm.controls.bait.touched}" formControlName="bait">
 					</div>
+					<div class="col-12 mb-3">
+						<label for="formFile" class="form-label">Upload photo</label>
+						<input type="file" class="form-control" id="formFile" (change)="handleFileInput($event)">
+					</div>
 					<input type="hidden" name="lat" formControlName="lat">
 					<input type="hidden" name="lng" formControlName="lng">
 					<input type="hidden" name="uid" formControlName="uid">
