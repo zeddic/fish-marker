@@ -8,11 +8,9 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
 	user = new BehaviorSubject<User | null>(null);
 
-	userDetails = new BehaviorSubject({}); // Contains the logged in user's details
-
 	constructor() { }
 
-	setUser(user: User) {
+	setUser(user: User | null) {
 		this.user.next(user);
 	}
 }

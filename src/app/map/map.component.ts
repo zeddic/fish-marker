@@ -41,7 +41,7 @@ export class MapComponent implements OnInit {
 		});
 
 		// Fetch the user details
-		this.userService.userDetails.pipe(first()).subscribe(user => {
+		this.userService.user.pipe(first()).subscribe(user => {
 			this.user = user;
 
 			// Load the map

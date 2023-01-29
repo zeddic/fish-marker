@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
 	constructor(private auth: AngularFireAuth, private router: Router, private userService: UserService, private catchesService: CatchesService) { }
 
 	ngOnInit(): void {
-		this.userSubscription = this.userService.userDetails.subscribe(user => {
+		this.userSubscription = this.userService.user.subscribe(user => {
 			this.user = user;
 		});
 
