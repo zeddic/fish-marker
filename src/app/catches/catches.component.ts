@@ -1,26 +1,35 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { UserService } from '../auth/user.service';
 import { Catch } from './catch.model';
 import { CatchesService } from './catches.service';
 
 @Component({
-	selector: 'app-catches',
-	templateUrl: './catches.component.html',
-	styleUrls: ['./catches.component.css']
+  selector: 'app-catches',
+  templateUrl: './catches.component.html',
+  styleUrls: ['./catches.component.css'],
 })
-export class CatchesComponent implements OnInit, OnDestroy {
-	catches: Catch[] = [];
-	catchSubscription!: Subscription;
-	constructor(private catchesService: CatchesService) { }
+export class CatchesComponent implements OnInit {
+  catches: Catch[] = [];
 
-	ngOnInit(): void {
-		// Subscribe to list of users catches, if null set to empty array
-		this.catchSubscription = this.catchesService.userCatches.subscribe((catches: Catch[] | null) => {
-			this.catches = (catches !== null ? catches : []);
-		});
-	}
+  constructor(
+    private catchesService: CatchesService,
+    private readonly userService: UserService
+  ) {}
 
-	ngOnDestroy(): void {
-		this.catchSubscription.unsubscribe();
-	}
+  ngOnInit(): void {
+    this.catchesService
+      .getUserCatches(this.userService.uid!)
+      .then((catches) => {
+        this.catches = catches;
+      })
+      .catch((err) => {
+        // show user friendly error here.
+      });
+  }
 }

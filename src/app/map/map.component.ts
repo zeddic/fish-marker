@@ -11,103 +11,133 @@ import { CatchesService } from '../catches/catches.service';
 import { Catch } from '../catches/catch.model';
 
 @Component({
-	selector: 'app-map',
-	templateUrl: './map.component.html',
-	styleUrls: ['./map.component.css'],
-	host: { 'class': 'flex-grow-1' }
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.css'],
+  host: { class: 'flex-grow-1' },
 })
 export class MapComponent implements OnInit, OnDestroy {
-	// https://github.com/angular/angularfire/issues/3290#issuecomment-1367299606
-	catches: Catch[] = [];
-	catchSubscription!: Subscription;
-	map!: any;
-	fileToUpload: File | null = null;
+  // https://github.com/angular/angularfire/issues/3290#issuecomment-1367299606
+  catches: Catch[] = [];
+  map!: any;
+  fileToUpload: File | null = null;
 
-	// Create structure for catch form
-	catchForm = new FormGroup({
-		'type': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'lbs': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'oz': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'rig': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'bait': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'lat': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'lng': new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-		'uid': new FormControl(this.userService.uid, { nonNullable: true, validators: [Validators.required] })
-	});
+  // Create structure for catch form
+  catchForm = new FormGroup({
+    type: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    lbs: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    oz: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    rig: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    bait: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    lat: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    lng: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    uid: new FormControl(this.userService.uid, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
 
-	constructor(private firestore: AngularFirestore, private userService: UserService, private catchesService: CatchesService) { }
+  constructor(
+    private firestore: AngularFirestore,
+    private userService: UserService,
+    private catchesService: CatchesService
+  ) {}
 
-	ngOnInit() {
-		// Initialise loader for map
-		let loader = new Loader({
-			apiKey: environment.firebase.mapApiKey
-		});
+  ngOnInit() {
+    // Initialise loader for map
+    let loader = new Loader({
+      apiKey: environment.firebase.mapApiKey,
+    });
 
-		// Once loader is ready build map
-		loader.load().then(() => {
-			this.map = new google.maps.Map(document.getElementById('map')!, {
-				center: this.getLocation(),
-				zoom: 20,
-				mapTypeId: 'satellite',
-				tilt: 0
-			});
-			this.map.addListener('click', (mapsMouseEvent: any) => {
-				// Get the location of the click event on map and add to form
-				let location = mapsMouseEvent.latLng.toJSON();
-				this.catchForm.patchValue({
-					lat: location.lat,
-					lng: location.lng
-				});
+    // Once loader is ready build map
+    loader
+      .load()
+      .then(() => {
+        this.map = new google.maps.Map(document.getElementById('map')!, {
+          center: this.getLocation(),
+          zoom: 20,
+          mapTypeId: 'satellite',
+          tilt: 0,
+        });
+        this.map.addListener('click', (mapsMouseEvent: any) => {
+          // Get the location of the click event on map and add to form
+          let location = mapsMouseEvent.latLng.toJSON();
+          this.catchForm.patchValue({
+            lat: location.lat,
+            lng: location.lng,
+          });
 
-				// Show the add catch modal
-				const element = document.getElementById('add-catch-modal') as HTMLElement;
-				const myModal = new Modal(element);
-				myModal.show();
-			});
-		}).then(() => {
-			// Loops through users catches and add them to the map
-			this.catchSubscription = this.catchesService.userCatches.subscribe((catches: Catch[] | null) => {
-				if (catches !== null) {
-					this.catches = [];
-					for (let catchItem of catches) {
-						this.createMarker(catchItem);
-					}
-				}
-			});
-		});
-	}
+          // Show the add catch modal
+          const element = document.getElementById(
+            'add-catch-modal'
+          ) as HTMLElement;
+          const myModal = new Modal(element);
+          myModal.show();
+        });
+      })
+      .then(() => {
+        return this.catchesService.getUserCatches(this.userService.uid!);
+      })
+      .then((catches) => {
+        this.catches = [];
+        for (let catchItem of catches) {
+          this.createMarker(catchItem);
+        }
+      });
+  }
 
-	addCatch() {
-		if (this.catchForm.valid) {
-			let catchFormValues: any = this.catchForm.value;
-			catchFormValues.createdAt = Timestamp.now();
-			// console.log(this.fileToUpload)
-			// let url = this.catchesService.uploadCatchPhoto(this.fileToUpload, catchFormValues.uid);
-			// console.log(url);
-			// catchFormValues.image = url;
+  addCatch() {
+    if (this.catchForm.valid) {
+      let catchFormValues: any = this.catchForm.value;
+      catchFormValues.createdAt = Timestamp.now();
+      // console.log(this.fileToUpload)
+      // let url = this.catchesService.uploadCatchPhoto(this.fileToUpload, catchFormValues.uid);
+      // console.log(url);
+      // catchFormValues.image = url;
 
+      this.catchesService.addCatch(catchFormValues, this.fileToUpload);
+      this.createMarker(catchFormValues);
+      const element = document.getElementById(
+        'close-bootstrap-modal'
+      ) as HTMLElement;
+      element.click();
+    }
+  }
 
+  handleFileInput(event: any) {
+    this.fileToUpload = event.target.files[0];
+  }
 
-			this.catchesService.addCatch(catchFormValues, this.fileToUpload);
-			this.createMarker(catchFormValues);
-			const element = document.getElementById('close-bootstrap-modal') as HTMLElement;
-			element.click();
-		}
-	}
-
-	handleFileInput(event: any) {
-		this.fileToUpload = event.target.files[0];
-	}
-
-	createMarker(catchItem: Catch) {
-		let marker = new google.maps.Marker({
-			position: { lat: catchItem.lat, lng: catchItem.lng },
-			map: this.map,
-			label: (this.catches.length + 1).toString()
-		});
-		marker.addListener('click', () => {
-			new google.maps.InfoWindow({
-				content: `<div id="content">
+  createMarker(catchItem: Catch) {
+    let marker = new google.maps.Marker({
+      position: { lat: catchItem.lat, lng: catchItem.lng },
+      map: this.map,
+      label: (this.catches.length + 1).toString(),
+    });
+    marker.addListener('click', () => {
+      new google.maps.InfoWindow({
+        content: `<div id="content">
 							<h1 id="firstHeading" class="firstHeading">${catchItem.type}</h1>
 							<img src="${catchItem.image}" class="card-img-top" alt="...">
 							<div id="bodyContent">
@@ -115,30 +145,28 @@ export class MapComponent implements OnInit, OnDestroy {
 								<p class="mb-0"><strong>Bait:</strong> ${catchItem.bait}</p>
 								<p class="mb-0"><strong>Rig:</strong> ${catchItem.rig}</p>
 							</div>
-						</div>`
-			}).open({
-				anchor: marker,
-				map: this.map
-			});
-		});
-		this.catches.push({ ...catchItem, ...marker });
-	}
+						</div>`,
+      }).open({
+        anchor: marker,
+        map: this.map,
+      });
+    });
+    this.catches.push({ ...catchItem, ...marker });
+  }
 
-	getLocation() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				const pos = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude,
-				};
-				this.map.setCenter(pos);
-				return pos;
-			});
-		}
-		return { lat: 53.391991, lng: -3.178860 };
-	}
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        this.map.setCenter(pos);
+        return pos;
+      });
+    }
+    return { lat: 53.391991, lng: -3.17886 };
+  }
 
-	ngOnDestroy(): void {
-		this.catchSubscription.unsubscribe();
-	}
+  ngOnDestroy(): void {}
 }

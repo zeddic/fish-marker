@@ -1,34 +1,77 @@
 import { Injectable } from '@angular/core';
-import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import firebase from 'firebase/compat/app';
+import { filter, Observable, ReplaySubject } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-	user = new BehaviorSubject<User | null>(null);
-	uid!: string;
+  private readonly userSubject = new ReplaySubject<firebase.User | null>(1);
+  private currentUser: firebase.User | null = null;
 
-	constructor(private auth: AngularFireAuth, private router: Router) { }
+  // uid!: string;
 
-	setUser(user: User | null) {
-		this.user.next(user);
-		this.uid = (user !== null ? user.uid : '');
-	}
+  constructor(private auth: AngularFireAuth, private router: Router) {
+    this.setupWatchUser();
+    this.setupRedirectToLoginPageOnSignOut();
+  }
 
-	signIn(email: string, password: string) {
-		this.auth.signInWithEmailAndPassword(email, password).then(userCred => {
-			this.router.navigate(['catches']);
-		}).catch(error => console.log('An error has occured:', error));
-	}
+  private setupWatchUser() {
+    this.auth.onAuthStateChanged((user) => {
+      this.currentUser = user;
+      this.userSubject.next(user);
+    });
+  }
 
-	createUser(email: string, password: string, name: string) {
-		this.auth.createUserWithEmailAndPassword(email, password).then(userCred => {
-			userCred.user?.updateProfile({ displayName: name }).then(() => {
-				this.router.navigate(['catches']);
-			});
-		}).catch(error => console.log('An error has occured:', error));
-	}
+  private setupRedirectToLoginPageOnSignOut() {
+    this.watchUser()
+      .pipe(filter((u) => !u))
+      .subscribe(() => {
+        this.gotoLogin();
+      });
+  }
+
+  get user() {
+    return this.currentUser;
+  }
+
+  get uid() {
+    return this.currentUser?.uid;
+  }
+
+  watchUser() {
+    return this.userSubject.asObservable();
+  }
+
+  signIn(email: string, password: string) {
+    this.auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCred) => {
+        this.gotoLandingPage();
+      })
+      // NOTE: Instead of catching these errors, I recommend returning them to
+      // the component so it can catch it and display something to the user.
+      .catch((error) => console.log('An error has occured:', error));
+  }
+
+  createUser(email: string, password: string, name: string) {
+    this.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCred) => {
+        userCred.user?.updateProfile({ displayName: name }).then(() => {
+          this.gotoLandingPage();
+        });
+      })
+      .catch((error) => console.log('An error has occured:', error));
+  }
+
+  private gotoLandingPage() {
+    this.router.navigate(['catches']);
+  }
+
+  private gotoLogin() {
+    this.router.navigate(['login']);
+  }
 }
